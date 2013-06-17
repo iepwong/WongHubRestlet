@@ -27,7 +27,9 @@ public class VitaminDFrontDoorServerResource extends ServerResource {
 
 		RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 0");
 		RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 1");
-
+		RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 2");
+		RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 3");
+		
 		// Get Last Update value from Front Door
 		try {
 			postVal = cOSMClient.COSMClientGetLastUpdate(88818, 1, minutesElapsed);

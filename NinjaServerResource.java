@@ -88,6 +88,7 @@ public class NinjaServerResource extends ServerResource {
 		if (DA.equals("000101110100010101010000")) {
 			// Leroy Door Motion
 			lastDateStr = jedis.get("LeroyDoor");
+			RunShell.Run("/Users/Ian/blink1-tool --RGB 128,0,128 --blink 2 -d 3");
 			if (lastDateStr != null) {
 				org.joda.time.DateTime leroydatetime = parser1.parseDateTime(lastDateStr);
 				secondsBetween = org.joda.time.Seconds.secondsBetween(leroydatetime, currentdatetime).getSeconds();
@@ -112,7 +113,7 @@ public class NinjaServerResource extends ServerResource {
 			float LIGHTTHRESH = (float)0.5;
 			
 			String OfficeLightStr = jedis.get("PrevOfficeLight");
-			
+			RunShell.Run("/Users/Ian/blink1-tool --RGB 0,128,128 --blink 2 -d 3");			
 			if (OfficeLightStr == null) OfficeLightStr = "0";
 			
 			float OfficeLight =  Float.parseFloat(OfficeLightStr);
@@ -171,6 +172,8 @@ public class NinjaServerResource extends ServerResource {
 
 				RunShell.Run("/Users/Ian/blink1-tool --blue --blink 5 -d 0");
 				RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 1");
+				RunShell.Run("/Users/Ian/blink1-tool --blue --blink 5 -d 2");
+				RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 3");
 				System.out.println("Alexander Motion: " + postVal + " -> " + inDate);
 			}
 		}
@@ -204,6 +207,8 @@ public class NinjaServerResource extends ServerResource {
 					}
 					RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 0");
 					RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 1");
+					RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 5 -d 2");
+					RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 5 -d 3");
 					try {
 						cOSMClient.COSMClientPostImpulse(122999, 0, date1,
 								Integer.toString(postVal));
@@ -250,6 +255,8 @@ public class NinjaServerResource extends ServerResource {
 					}
 					RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 0");
 					RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 1");
+					RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 5 -d 2");
+					RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 5 -d 3");
 					try {
 						cOSMClient.COSMClientPostImpulse(122999, 0, date1,
 								Integer.toString(postVal));
@@ -275,8 +282,10 @@ public class NinjaServerResource extends ServerResource {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			RunShell.Run("/Users/Ian/blink1-tool --rgb 128,0,128 --blink 2 -d 0");
-			RunShell.Run("/Users/Ian/blink1-tool --rgb 0,128,128 --blink 2 -d 1");
+			RunShell.Run("/Users/Ian/blink1-tool --rgb red --blink 10 -d 0");
+			RunShell.Run("/Users/Ian/blink1-tool --rgb blue --blink 10 -d 1");
+			RunShell.Run("/Users/Ian/blink1-tool --rgb green --blink 10 -d 2");
+			RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 10 -d 3");
 			try {
 				cOSMClient.COSMClientPostImpulse(122999, 1, date1,
 						Integer.toString(postVal));
@@ -319,7 +328,7 @@ public class NinjaServerResource extends ServerResource {
 				String RGBDec = "0x" + LEDColor.substring(0, 2) + ",0x"
 						+ LEDColor.substring(2, 4) + ",0x" + LEDColor.substring(4, 6);
 				RunShell.Run("/Users/Ian/blink1-tool --rgb " + RGBDec
-						+ " --blink 1 -d 1");
+						+ " --blink 2 -d 3");
 				try {
 					ninjaClient.NinjaClientPut("4412BB000368_0_0_1007", LEDColor);
 				}

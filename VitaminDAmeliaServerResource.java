@@ -42,7 +42,8 @@ public class VitaminDAmeliaServerResource extends ServerResource {
 
 			RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 0");
 			RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 1");
-
+			RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 2");
+			RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 3");
 			// Get Last Open.Sen.Se Lightlevel from Amelia's Room
 			try {
 				lightLevel = senseClient.SenseClientGetLastEvent(12358);

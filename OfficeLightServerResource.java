@@ -30,13 +30,13 @@ public class OfficeLightServerResource extends ServerResource {
 		float PrevLight =  Float.parseFloat(PrevLightStr);
 		jedis.set("PrevOfficeLight", DA);
 		
-		if (Float.parseFloat(DA) < LIGHTTHRESH && PrevLight >= LIGHTTHRESH){
-			RunShell.Run("perl /Users/Ian/Perl-Belkin-WeMo-API-master/DiningLamp.pl");
-		}
+//		if (Float.parseFloat(DA) < LIGHTTHRESH && PrevLight >= LIGHTTHRESH){
+//			RunShell.Run("perl /Users/Ian/Perl-Belkin-WeMo-API-master/DiningLamp.pl");
+//		}
 
-		if (Float.parseFloat(DA) >= LIGHTTHRESH && PrevLight < LIGHTTHRESH){
-			RunShell.Run("perl /Users/Ian/Perl-Belkin-WeMo-API-master/DiningLampOff.pl");
-		}
+//		if (Float.parseFloat(DA) >= LIGHTTHRESH && PrevLight < LIGHTTHRESH){
+//			RunShell.Run("perl /Users/Ian/Perl-Belkin-WeMo-API-master/DiningLampOff.pl");
+//		}
 		
 	}
 }

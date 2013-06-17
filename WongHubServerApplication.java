@@ -54,6 +54,8 @@ public class WongHubServerApplication extends Application {
 		router.attach("/vitamind/backyard", VitaminDBackyardServerResource.class);
 		router.attach("/vitamind/alexander", VitaminDAlexanderServerResource.class);
 		router.attach("/Office/resetlight", ResetOfficeLightServerResource.class);
+		router.attach("/tod/ianhome", TodIanHomeServerResource.class);
+		router.attach("/tod/ianwork", TodIanWorkServerResource.class);
 		return router;
 	}
 }
