@@ -13,42 +13,21 @@ import twitter4j.auth.AccessToken;
 
 public class GetTwitterStatus {
 
-	static String OAuthConsumerKey = "FIYlQbXyFDQA3A5af7cTw";
-	static String OAuthConsumerSecret = "GMarxGlm9Ty8qQ6pi5A6Js6yZnqwlWj4ZDyz7uY68";
-	static String AccessToken = "453669960-uXhcshsjlgK4ge7RGViz3R5qdx9IrFxxl4gHidIw";
-	static String AccessTokenSecret = "2zWIWhfU6TKkiAHRqmJgKcA3iX9VXnFNsOTrum8";
+	static String OAuthConsumerKey = "Wb1v47mK7EDNcYqVpLKwjYzvS";
+	static String OAuthConsumerSecret = "wh07wOrZHS9yXp4GFImsMmMW7IRXC9kNp3JsXBcfcQi3xaZWob";
+	static String AccessToken = "2701982725-qyR7Bu7SSgLKF7ARyoSYyVAFDvrrrS6igEiaYlD";
+	static String AccessTokenSecret = "pm8GfnrpaqpO80kwuxQnXpR8qEA5KcaUzsNIDrbn26KIo";
 
-	static Twitter twitter = new TwitterFactory().getInstance();
+	static Twitter twitter = new TwitterFactory().getSingleton();
 
-	public static void postAmeliaSleepMsg(String statusMsg) {
+	public void postWhereisiepwongMsg(String statusMsg) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		// get current date time with Date()
 		Date date = new Date();
-
-		loginTwitter();
 		postMsg(statusMsg + ": " + dateFormat.format(date));
 
 	}
-
-	public static void getAmeliaSleepTimeline() {
-		loginTwitter();
-		try {
-			User user = twitter.verifyCredentials();
-			List<Status> statuses = twitter.getUserTimeline();
-			System.out.println("Showing @" + user.getScreenName()
-					+ "'s home timeline.");
-			for (Status status : statuses) {
-				System.out.println("@" + status.getUser().getScreenName() + " - "
-						+ status.getText());
-			}
-		}
-		catch (TwitterException te) {
-			te.printStackTrace();
-			System.out.println("Failed to get timeline: " + te.getMessage());
-			System.exit(-1);
-		}
-	}
-
+	
 	static void loginTwitter() {
 		twitter.setOAuthConsumer(OAuthConsumerKey, OAuthConsumerSecret);
 		AccessToken accessToken = loadAccessToken();
@@ -62,7 +41,8 @@ public class GetTwitterStatus {
 	static void postMsg(String s) {
 		try {
 			Status status = twitter.updateStatus(s);
-			String status_str = status.getText();
+		  String status_str = status.getText();
+			System.out.println("Twitter Status String -> "+status_str);
 		}
 		catch (TwitterException e) {
 		}

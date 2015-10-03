@@ -29,10 +29,12 @@ public class SenseClient {
 		ClientResource SenseClient = new ClientResource(
 				"http://api.sen.se/events/?sense_key=dMsuklvoGphzLUA2LBBgTQ");
 		SenseClient.setRequestEntityBuffering(true);
+		
 
 		Representation rep = new JsonRepresentation(SenseElt);
 		rep.setMediaType(MediaType.APPLICATION_WWW_FORM);
 		Representation reply = SenseClient.post(rep);
+		// System.out.println(reply+"SenseClient "+value);
 	}
 
 }

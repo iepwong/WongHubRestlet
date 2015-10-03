@@ -1,10 +1,12 @@
 package WongHubRestlet;
 
+import java.util.Calendar;
 import java.util.Date;
 import org.json.JSONException;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
+import redis.clients.jedis.Jedis;
 
 /**
  * Resource corresponding to a WongHub received or sent with the parent WongHub
@@ -14,47 +16,50 @@ public class VitaminDAlexanderServerResource extends ServerResource {
 
 	@Post
 	public void poststore(Representation rep) throws JSONException {
-		int postVal = 0;
-		int secondsElapsed = 0;
-		float minuteselapsed = 2;
-		COSMClient cOSMClient = new COSMClient();
-		NinjaClient ninjaClient = new NinjaClient();
+		SparkClient sparkClient = new SparkClient();
 		PushoverClient pushoverClient = new PushoverClient();
-
 		String Announce = getQuery().getValues("announce");
+		Jedis jedis = new Jedis("localhost");
+		String WongHubAnnounce = jedis.get("WongHubAnnounce");
+		float PrevLight =(float) sparkClient.SparkClientGetLight("Alex");
+		org.joda.time.DateTime currentdatetime;
+		org.joda.time.format.DateTimeFormatter parser1 = org.joda.time.format.ISODateTimeFormat.dateTime();
+		currentdatetime = new org.joda.time.DateTime();
+		int secondsBetween = 0;
+		String lastDateStr;
+		Calendar cal = Calendar.getInstance();
+		int hour = cal.get(Calendar.HOUR_OF_DAY);
 
-		RunShell.Run("/Users/Ian/blink1-tool --rgb 128,128,255--blink 5 -d 0");
-		RunShell.Run("/Users/Ian/blink1-tool --rgb 128,128,255--blink 5 -d 1");
-
-		// Get Last COSM Update value from Alexander's Cot
-		try {
-			postVal = cOSMClient.COSMClientGetLastUpdate(88818, 5, minuteselapsed);
-			secondsElapsed = cOSMClient.COSMClientGetSecondsSinceLastUpdate(88818, 5);
+		lastDateStr = jedis.get("AlexanderTime");
+		if (lastDateStr != null) {
+			org.joda.time.DateTime alexdatetime = parser1
+					.parseDateTime(lastDateStr);
+			secondsBetween = org.joda.time.Seconds.secondsBetween(alexdatetime,
+					currentdatetime).getSeconds();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		else
+		{
+			jedis.set("AlexanderTime", parser1.print(currentdatetime));
 		}
+		
+		System.out.println("Alexander seconds between ->"+secondsBetween);
+		
+		if (secondsBetween > 60) {
+			jedis.set("AlexanderTime", parser1.print(currentdatetime));
 
-		Date date1 = new Date();
-		try {
-			cOSMClient.COSMClientPostImpulse(88818, 5, date1, Integer.toString(postVal));
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		if ((postVal % 10) == 0) {
-			System.out.println("Announcing Alexander is stirring.");
-			try {
-				pushoverClient.PushoverClientPost("Alexander is stirring:VD! -> "+ postVal, "AlexanderStir");
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			if (Announce.equals("on")) {
-				RunShell.Run("perl /Users/Ian/Perl-Belkin-WeMo-API-master/LivingRoomAlex.pl");
-				RunShell.Run("/usr/bin/osascript /Users/Ian/Documents/scripts/AppleScripts/AlexanderIsStirring.scpt");				
+			if (PrevLight < 90){
+				if ((hour > 7) && (hour < 23) && Announce.equals("on") && (WongHubAnnounce.equals("on"))) {
+//					RunShell.Run("/usr/bin/osascript /Users/Ian/Documents/scripts/AppleScripts/AlexanderIsStirring.scpt");			
+					RunShell.Run("/Users/Ian/blink1-tool --blue --blink 5 -d 0");
+					RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 1");
+					RunShell.Run("/Users/Ian/blink1-tool --blue --blink 5 -d 2");
+					RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 3");				}
+				try {
+					pushoverClient.PushoverClientPost("Alexander is stirring!", "AlexanderStir");
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

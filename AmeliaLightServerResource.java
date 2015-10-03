@@ -21,18 +21,18 @@ public class AmeliaLightServerResource extends ServerResource {
 		JSONObject NinjaElt = NinjaRep.getJsonObject();
 		Date inDate = new Date(Long.parseLong(NinjaElt.getString("timestamp")));
 		String DA = NinjaElt.getString("DA");
-		COSMClient cOSMClient = new COSMClient();
 
 		Jedis jedis = new Jedis("localhost");
 		
 		String PrevLightStr = jedis.get("PrevAmeliaLight");
+		jedis.set("PrevAmeliaLight", DA);
 		
 		if (PrevLightStr == null) PrevLightStr = "0";
 		
 		float PrevLight =  Float.parseFloat(PrevLightStr);
-		jedis.set("PrevAmeliaLight", DA);
+		float fltDA = Float.parseFloat(DA);
 		
-
+		
 		if (Float.parseFloat(DA) >= LIGHTTHRESH && PrevLight < LIGHTTHRESH){
 			RunShell.Run("perl /Users/Ian/Perl-Belkin-WeMo-API-master/AmeliaElephantOff.pl");
 		}
@@ -44,7 +44,7 @@ public class AmeliaLightServerResource extends ServerResource {
 		// System.out.println("DA: " + DA);
 		// System.out.println("TIMESTAMP: " + inDate);
 		try {
-			cOSMClient.COSMClientPost(40517, 0, inDate, DA);
+//			cOSMClient.COSMClientPost(40517, 0, inDate, DA);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

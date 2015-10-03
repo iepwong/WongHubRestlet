@@ -35,7 +35,6 @@ public class NinjaTempServerResource extends ServerResource {
 		// System.out.println(NinjaElt.toString());
 		Date inDate = new Date(Long.parseLong(NinjaElt.getString("timestamp")));
 		String DA = NinjaElt.getString("DA");
-		COSMClient cOSMClient = new COSMClient();
 
 		// Output the JSON element values
 		// System.out.println("D: " + NinjaElt.toString());
@@ -44,7 +43,7 @@ public class NinjaTempServerResource extends ServerResource {
 		// System.out.println("DA: " + DA);
 		// System.out.println("TIMESTAMP: " + inDate);
 		try {
-			cOSMClient.COSMClientPost(96124, 1, inDate, DA);
+//			cOSMClient.COSMClientPost(96124, 1, inDate, DA);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

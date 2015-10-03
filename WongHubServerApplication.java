@@ -20,10 +20,13 @@ public class WongHubServerApplication extends Application {
 	 */
 	public static void main(String[] args) throws Exception {
 		Component WongHubServer = new Component();
+		
+		GetTwitterStatus getTwitterStatus = new GetTwitterStatus();
+		getTwitterStatus.loginTwitter();
 
 		WongHubServer.getClients().add(Protocol.HTTP);
 		WongHubServer.getClients().add(Protocol.HTTPS);
-		WongHubServer.getServers().add(Protocol.HTTP, 8111);
+		WongHubServer.getServers().add(Protocol.HTTP, 58080);
 		WongHubServer.getDefaultHost().attach(new WongHubServerApplication());
 		WongHubServer.start();
 	}
@@ -34,8 +37,7 @@ public class WongHubServerApplication extends Application {
 	@Override
 	public Restlet createInboundRoot() {
 		Router router = new Router(getContext());
-		router.attach("/accounts/{accountId}/WongHubs/{WongHubId}",
-				Blink1ServerResource.class);
+		router.attach("/accounts/{accountId}/WongHubs/{WongHubId}", Blink1ServerResource.class);
 		router.attach("/blink1", Blink1ServerResource.class);
 		router.attach("/ninja", NinjaServerResource.class);
 		router.attach("/ninja/blocktemp", NinjaBlockTempServerResource.class);
@@ -45,17 +47,29 @@ public class WongHubServerApplication extends Application {
 		router.attach("/Amelia/temp", AmeliaTempServerResource.class);
 		router.attach("/Amelia/light", AmeliaLightServerResource.class);
 		router.attach("/Amelia/humid", AmeliaHumidServerResource.class);
-		// router.attach("/newninja/humid", NewNinjaHumidServerResource.class);
+//		router.attach("/newninja/humid", NewNinjaHumidServerResource.class);
+		router.attach("/Dining/light", DiningLightServerResource.class);
+		router.attach("/Dining/audio", DiningAudioServerResource.class);
 		router.attach("/Office/light", OfficeLightServerResource.class);
+		router.attach("/Living/light", LivingLightServerResource.class);
+		router.attach("/Alex/light", AlexanderLightServerResource.class);
+		router.attach("/Amelia/audio", AmeliaAudioServerResource.class);
+		router.attach("/Living/audio", LivingAudioServerResource.class);
+		router.attach("/Alex/audio", AlexanderAudioServerResource.class);
 		router.attach("/vitamind/hallway", VitaminDHallwayServerResource.class);
 		router.attach("/vitamind/sidegate", VitaminDSidegateServerResource.class);
 		router.attach("/vitamind/frontdoor", VitaminDFrontDoorServerResource.class);
 		router.attach("/vitamind/amelia", VitaminDAmeliaServerResource.class);
 		router.attach("/vitamind/backyard", VitaminDBackyardServerResource.class);
 		router.attach("/vitamind/alexander", VitaminDAlexanderServerResource.class);
+		router.attach("/wonghub/announce", WongHubAnnounceServerResource.class);
 		router.attach("/Office/resetlight", ResetOfficeLightServerResource.class);
-		router.attach("/tod/ianhome", TodIanHomeServerResource.class);
-		router.attach("/tod/ianwork", TodIanWorkServerResource.class);
+		router.attach("/Office/checkAudio", OfficeCheckAudioResource.class);
+		router.attach("/geohopper/ianhome", GeoHopperIanHomeServerResource.class);
+		router.attach("/geofency", GeoFencyServerResource.class);
+		router.attach("/Smartthings", SmartthingsServerResource.class);
+		router.attach("/UbiServer", UbiServerResource.class);
+		router.attach("/incoming_wufoo", IncomingWufoo.class);
 		return router;
 	}
 }

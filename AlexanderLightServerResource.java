@@ -11,21 +11,24 @@ import redis.clients.jedis.Jedis;
  * Resource corresponding to a WongHub received or sent with the parent WongHub
  * account. Leverages JSON.org extension.
  */
-public class OfficeLightServerResource extends ServerResource {
+public class AlexanderLightServerResource extends ServerResource {
 
 	@Post
 	public void poststore(JsonRepresentation NinjaRep) throws JSONException {
 		// Parse the JSON representation to get the Ninja properties
-
 		JSONObject NinjaElt = NinjaRep.getJsonObject();
 		Jedis jedis = new Jedis("localhost");
 		
 		String DA = NinjaElt.getString("DA");
-		String PrevLightStr = jedis.get("PrevOfficeLight");
+		String PrevLightStr = jedis.get("PrevAlexLight");
+		jedis.set("PrevAlexLight", DA);
 		
 		if (PrevLightStr == null) PrevLightStr = "0";
-		
-		jedis.set("PrevOfficeLight", DA);
+		float PrevLight =  Float.parseFloat(PrevLightStr);
+		float fltDA = Float.parseFloat(DA);
+
+//		float PrevLight =  Float.parseFloat(PrevLightStr);
+
 		
 //		if (Float.parseFloat(DA) < LIGHTTHRESH && PrevLight >= LIGHTTHRESH){
 //			RunShell.Run("perl /Users/Ian/Perl-Belkin-WeMo-API-master/DiningLamp.pl");

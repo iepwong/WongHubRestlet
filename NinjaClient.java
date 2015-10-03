@@ -9,7 +9,6 @@ import org.restlet.resource.ClientResource;
 public class NinjaClient {
 
 	public void NinjaClientGet(String[] args) throws Exception {
-		JSONObject NinjaElt = new JSONObject();
 
 		ClientResource NinjaClient = new ClientResource(
 				"http://api.Ninja.com/v2/feeds/88818/datastreams/3.json?timezone=Melbourne&key=L5OWO0Ow-cmUfuXoAbS4p1cSTWz1o6KWsBQBgXf3oh0");
@@ -39,6 +38,7 @@ public class NinjaClient {
 		Representation rep = new JsonRepresentation(NinjaElt);
 		rep.setMediaType(MediaType.APPLICATION_JSON);
 		Representation reply = NinjaClient.put(rep);
+		System.out.println(reply);
 	}
 
 }
