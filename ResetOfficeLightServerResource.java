@@ -27,7 +27,7 @@ public class ResetOfficeLightServerResource extends ServerResource {
 		PrevLight = (float) sparkClient.SparkClientGetLight("Alex");
 		// cubeSensor.getDevices();
 		} catch (Exception e) {e.printStackTrace();}
-		System.out.println("Alex Light ->"+PrevLight);
+		System.out.println("Alex Light -> "+PrevLight);
 
 		// Alexander's Temperature
 		if (PrevLight < 90){
@@ -42,7 +42,7 @@ public class ResetOfficeLightServerResource extends ServerResource {
 				// System.out.println(DataStr);
 				JSONObject JsonData = new JSONObject(DataStr);
 				String AlexTemp = JsonData.getString("DA");
-				System.out.println("Alex Temp ->"+AlexTemp);
+				System.out.println("Alex Temp -> "+AlexTemp);
 
 				if (Float.parseFloat(AlexTemp) > 20) {
 					RunShell

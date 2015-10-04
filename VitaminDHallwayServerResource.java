@@ -31,12 +31,21 @@ public class VitaminDHallwayServerResource extends ServerResource {
 		Calendar cal = Calendar.getInstance();
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		PushoverClient pushoverClient = new PushoverClient();
+		int postVal = 0;
+		String postValStr = null;
 
 		RunShell.Run("/Users/Ian/blink1-tool --blue --blink 5 -d 0");
 		RunShell.Run("/Users/Ian/blink1-tool --blue --blink 5 -d 1");
-
 		
 		lastDateStr = jedis.get("HallwayTime");
+		postValStr = jedis.get("HallwayPostVal");
+		if (postValStr != null) {
+			postVal = Integer.parseInt(postValStr);
+			jedis.set("HallwayPostVal", Integer.toString(postVal+1));
+		}else{
+			jedis.set("HallwayPostVal", "0");
+		}
+
 		if (lastDateStr != null) {
 			org.joda.time.DateTime hallwaydatetime = parser1
 					.parseDateTime(lastDateStr);
@@ -49,7 +58,7 @@ public class VitaminDHallwayServerResource extends ServerResource {
 		}
 		
 		// Update Hallway with newest value
-		if (secondsBetween > 30) {
+		if ((secondsBetween > 30)  && ((postVal % 5) ==0)) {
 			try {
 				pushoverClient.PushoverClientPost("Someone is walking the hallway!", "WongHome");
 			}
