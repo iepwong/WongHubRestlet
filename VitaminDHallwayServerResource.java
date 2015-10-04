@@ -59,6 +59,7 @@ public class VitaminDHallwayServerResource extends ServerResource {
 		
 		// Update Hallway with newest value
 		if ((secondsBetween > 30)  && ((postVal % 5) ==0)) {
+			jedis.set("HallwayTime", parser1.print(currentdatetime));
 			try {
 				pushoverClient.PushoverClientPost("Someone is walking the hallway!", "WongHome");
 			}

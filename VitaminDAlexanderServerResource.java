@@ -29,8 +29,19 @@ public class VitaminDAlexanderServerResource extends ServerResource {
 		String lastDateStr;
 		Calendar cal = Calendar.getInstance();
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
+		int postVal = 0;
+		String postValStr = null;
 
 		lastDateStr = jedis.get("AlexanderTime");
+		postValStr = jedis.get("AlexPostVal");
+
+		if (postValStr != null) {
+			postVal = Integer.parseInt(postValStr);
+			jedis.set("AlexPostVal", Integer.toString(postVal+1));
+		}else{
+			jedis.set("AlexPostVal", "0");
+		}
+		
 		if (lastDateStr != null) {
 			org.joda.time.DateTime alexdatetime = parser1
 					.parseDateTime(lastDateStr);
@@ -44,11 +55,11 @@ public class VitaminDAlexanderServerResource extends ServerResource {
 		
 		System.out.println("Alexander seconds between ->"+secondsBetween);
 		
-		if (secondsBetween > 60) {
+		if ((secondsBetween > 60) && (postVal % 5) ==0) {
 			jedis.set("AlexanderTime", parser1.print(currentdatetime));
 
 			if (PrevLight < 90){
-				if ((hour > 7) && (hour < 23) && Announce.equals("on") && (WongHubAnnounce.equals("on"))) {
+//				if ((hour > 7) && (hour < 23) && Announce.equals("on") && (WongHubAnnounce.equals("on"))) {
 //					RunShell.Run("/usr/bin/osascript /Users/Ian/Documents/scripts/AppleScripts/AlexanderIsStirring.scpt");			
 					RunShell.Run("/Users/Ian/blink1-tool --blue --blink 5 -d 0");
 					RunShell.Run("/Users/Ian/blink1-tool --green --blink 5 -d 1");
@@ -60,7 +71,7 @@ public class VitaminDAlexanderServerResource extends ServerResource {
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+//			}
 		}
 	}
 }
