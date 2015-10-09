@@ -55,7 +55,7 @@ public class VitaminDAlexanderServerResource extends ServerResource {
 		
 		System.out.println("Alexander seconds between ->"+secondsBetween);
 		
-		if ((secondsBetween > 60) && (postVal % 5) ==0) {
+		if ((secondsBetween > 60) && (postVal % 10) ==0) {
 			jedis.set("AlexanderTime", parser1.print(currentdatetime));
 
 			if (PrevLight < 90){

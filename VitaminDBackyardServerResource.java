@@ -23,6 +23,17 @@ public class VitaminDBackyardServerResource extends ServerResource {
 		org.joda.time.DateTime currentdatetime;
 		org.joda.time.format.DateTimeFormatter parser1 = org.joda.time.format.ISODateTimeFormat.dateTime();
 		currentdatetime = new org.joda.time.DateTime();
+		int postVal = 0;
+		String postValStr = null;
+		
+		postValStr = jedis.get("BackyardPostVal");
+		
+		if (postValStr != null) {
+			postVal = Integer.parseInt(postValStr);
+			jedis.set("BackyardPostVal", Integer.toString(postVal+1));
+		}else{
+			jedis.set("BackyardPostVal", "0");
+		}
 				
 		// Blink purple
 		RunShell.Run("/Users/Ian/blink1-tool --rgb 255,0,255 --blink 5 -d 0");
@@ -42,7 +53,7 @@ public class VitaminDBackyardServerResource extends ServerResource {
 			jedis.set("BackyardTime", parser1.print(currentdatetime));
 		}
 		
-		if (secondsBetween > 180) {
+		if ((secondsBetween > 180) && (postVal % 10 == 0)) {
 			try {
 				pushoverClient.PushoverClientPost("Someone is in the backyard!", "WongHome");
 			}
