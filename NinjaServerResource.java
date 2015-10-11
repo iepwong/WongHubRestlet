@@ -318,14 +318,20 @@ public class NinjaServerResource extends ServerResource {
 					RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 5 -d 3");
 
 					System.out.println("Front Door Correlated Motion -> " + " @ "+ inDate);
-					RunShell.Run("curl https://portal.theubi.com/webapi/behaviour?access_token=c2c64031-fb6b-417a-9d43-aa381a0d9220");
+					
+					if ((hour > wakeup) && (hour < nightHour)) {
+						if (WongHubAnnounce.equals("on")) {
+							RunShell.Run("curl https://portal.theubi.com/webapi/behaviour?access_token=c2c64031-fb6b-417a-9d43-aa381a0d9220");
+						}
+					}
+				
 					try {
 						pushoverClient.PushoverClientPost("Front Door Correlated Motion ->" + secondsBetweenCorrelated, "WongHome");
 					}
 					catch (Exception e) {
 						e.printStackTrace();}
-
 				}
+
 				if (sparkClient.SparkClientGetLight("Front") < SPARKLIGHTTHRESH) {
 					try {
 						try {
@@ -368,17 +374,24 @@ public class NinjaServerResource extends ServerResource {
 					RunShell.Run("/Users/Ian/blink1-tool --red --blink 5 -d 1");
 					RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 5 -d 2");
 					RunShell.Run("/Users/Ian/blink1-tool --rgb 255,255,0 --blink 5 -d 3");
-					
-					System.out.println("Front Door Correlated Motion -> " +" @ "+ inDate);
 
-					RunShell.Run("curl https://portal.theubi.com/webapi/behaviour?access_token=c2c64031-fb6b-417a-9d43-aa381a0d9220");
+					System.out.println("Front Door Correlated Motion -> " +" @ "+ inDate);
+					
+					if ((hour > wakeup) && (hour < nightHour)) {
+						if (WongHubAnnounce.equals("on"))
+						{
+							RunShell.Run("curl https://portal.theubi.com/webapi/behaviour?access_token=c2c64031-fb6b-417a-9d43-aa381a0d9220");
+
+						}
+					}
+
 					try {
 						pushoverClient.PushoverClientPost("Front Door Correlated Motion ->"+ secondsBetweenCorrelated, "WongHome");
 					}
 					catch (Exception e) {
 						e.printStackTrace();}
 				}
-			
+				
 				if (sparkClient.SparkClientGetLight("Front") < SPARKLIGHTTHRESH) {
 					try {
 						try {
